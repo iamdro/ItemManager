@@ -19,6 +19,7 @@
     "sequelize": "^4.37.6"
   },
   "devDependencies": {
+    "cors": "^2.8.4",
     "knex": "^0.14.6",
     "mysql": "^2.15.0",
     "mysql2": "^1.5.3"
