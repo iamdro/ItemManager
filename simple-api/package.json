@@ -1,0 +1,26 @@
+{
+  "name": "Item Saver",
+  "version": "1.0.0",
+  "description": "Simple api for storing REST requests into a database",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "node",
+    "mongodb",
+    "mongoose",
+    "demo"
+  ],
+  "author": "Pedro Ferreirs",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "sequelize": "^4.37.6"
+  },
+  "devDependencies": {
+    "knex": "^0.14.6",
+    "mysql": "^2.15.0",
+    "mysql2": "^1.5.3"
+  }
+}
