@@ -9,11 +9,12 @@ class Form extends Component {
         this.state = {
             title: '',
             description: '',
-            category: '',
+            category: '1',
             formErrors: {title: '', description: ''},
             titleValid: false,
             descriptionValid: false,
-            formValid: false
+            formValid: false,
+            message: ''
         }
     }
 
@@ -26,7 +27,7 @@ class Form extends Component {
             });
     }
 
-     createSelectItems() {
+    createSelectItems() {
         let items = [];
         for (let i = 1; i <= 100; i++) {
             items.push(<option value={i}>{i}</option>);
@@ -54,7 +55,7 @@ class Form extends Component {
         this.setState({
             formErrors: fieldValidationErrors,
             titleValid: titleValid,
-            descriptionValid: descriptionValid
+            descriptionValid: descriptionValid,
         }, this.validateForm);
     }
 
@@ -67,28 +68,38 @@ class Form extends Component {
     }
 
     handleSubmit = event => {
+
+        this.setState({message: "Saving"});
         event.preventDefault();
 
         const item = {
             title: this.state.title,
             description: this.state.description,
-            category: this.state.category
+            category_id: this.state.category
         };
 
-        axios.post(`http://localhost:3000/add`, { item })
+        axios.post(`http://localhost:3000/items`, {item})
             .then(res => {
-                console.log(res);
-                console.log(res.data);
+                console.log(res)
+                this.setState({message: "Item saved! Add another"});
+                document.getElementById("demoForm").reset();
+                this.setState({title: '', description: '', category: '1', errorMessage: ''});
+            }).catch(err => {
+                this.setState({message: '', errorMessage: "Item was not able to be saved."});
             })
+
     }
 
     render() {
         return (
-            <form className="demoForm" onSubmit={this.handleSubmit}>
+            <form id="demoForm" className="demoForm" onSubmit={this.handleSubmit}>
                 <h2>Save Item</h2>
+
                 <div className="panel panel-default">
                     <FormErrors formErrors={this.state.formErrors}/>
                 </div>
+                <div className="successMessage">{this.state.message}</div>
+                <div className="errorMessage">{this.state.errorMessage}</div>
                 <div className={`form-group ${this.errorClass(this.state.formErrors.title)}`}>
                     <label htmlFor="title">Title</label>
                     <input type="text" required className="form-control" name="title"
@@ -103,7 +114,7 @@ class Form extends Component {
                               value={this.state.description}
                               onChange={this.handleUserInput}/>
                 </div>
-                <div className="Category">
+                <div className="category">
                     <label htmlFor="category">Category</label>
                     <select type="select" name="category"
                             value={this.state.category}
@@ -111,7 +122,7 @@ class Form extends Component {
                         {this.createSelectItems()}
                     </select>
                 </div>
-                <button type="submit" className="btn btn-primary" >Sign up</button>
+                <button type="submit" className="btn btn-primary">Sign up</button>
             </form>
         )
     }

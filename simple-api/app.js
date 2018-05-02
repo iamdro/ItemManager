@@ -24,27 +24,65 @@ const Item = sequelize.define('items', {
     category_id:Sequelize.INTEGER,
 });
 
+function validateItem(item){
+    if (!item){
+        return false;
+    }
+    if (!item.title || item.title.length==0||item.title.length>255){
+        return false;
+    }
+    if (!item.description || item.description.length==0||item.description.length>255){
+        return false;
+    }
+    if (!item.category_id || item.category_id<0||item.category_id>255){
+        return false;
+    }
+    return true;
+}
 
 
-
-app.post("/add", (req, res) => {
-    console.log("request recieved ")
+app.post("/items", (req, res) => {
     console.log(req.body)
     let myData = req.body.item;
-    console.log("title: "+myData.title)
-    sequelize.sync()
-        .then(() => Item.create({
-            title: myData.title,
-            description: myData.description,
-            category_id: myData.category,
-        }))
-        .then(item => {
-            res.send("Name saved to database");
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(400).send("Unable to save to database");
-        });
+    if(!validateItem(myData)){
+        res.status(400).send("Invalid item trying to be saved");
+    }else {
+        sequelize.sync()
+            .then(() => Item.create({
+                title: myData.title,
+                description: myData.description,
+                category_id: myData.category_id,
+            }))
+            .then(item => {
+                res.send(item);
+            })
+            .catch(err => {
+                console.log(err);
+                res.status(400).send("Unable to save to database");
+            });
+    }
+});
+
+app.get("/get", (req, res) => {
+    console.log(req.body)
+    let myData = req.body.item;
+    if(!validateItem(myData)){
+        res.status(400).send("Invalid item trying to be saved");
+    }else {
+        sequelize.sync()
+            .then(() => Item.create({
+                title: myData.title,
+                description: myData.description,
+                category_id: myData.category_id,
+            }))
+            .then(item => {
+                res.send(item);
+            })
+            .catch(err => {
+                console.log(err);
+                res.status(400).send("Unable to save to database");
+            });
+    }
 });
 
 
