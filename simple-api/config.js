@@ -1,4 +1,5 @@
-var config = {};
+var config = module.exports = {};
+
 
 config.db = {
     host: 'localhost',

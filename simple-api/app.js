@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const config= require('./config');
 const port = 3000;
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
@@ -10,10 +11,10 @@ var cors = require('cors');
 // use it before all route definitions
 app.use(cors({origin: 'http://localhost:3001'}));
 
-
+console.log(config);
 const Sequelize = require('sequelize');
-const sequelize = new Sequelize('simplePost', 'root', 'password', {
-    host: 'localhost',
+const sequelize = new Sequelize(config.db.database, config.db.user, config.db.password, {
+    host: config.db.host,
     dialect: 'mysql',
     });
 

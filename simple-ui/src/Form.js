@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
-import {FormErrors} from './FormErrors';
 import './Form.css';
 import axios from 'axios';
+
+const config = require('../config')
 
 class Form extends Component {
     constructor(props) {
@@ -10,9 +11,8 @@ class Form extends Component {
             title: '',
             description: '',
             category: '1',
-            formErrors: {title: '', description: ''},
-            titleValid: false,
-            descriptionValid: false,
+            titleValid: true,
+            descriptionValid: true,
             formValid: false,
             message: ''
         }
@@ -36,24 +36,20 @@ class Form extends Component {
     }
 
     validateField(fieldName, value) {
-        let fieldValidationErrors = this.state.formErrors;
         let titleValid = this.state.titleValid;
         let descriptionValid = this.state.descriptionValid;
 
         switch (fieldName) {
             case 'title':
                 titleValid = value.length >= 1 && value.length < 255;
-                fieldValidationErrors.title = titleValid ? '' : ' is not between 1-255 characters';
                 break;
             case 'description':
                 descriptionValid = value.length >= 1 && value.length < 5000;
-                fieldValidationErrors.description = descriptionValid ? '' : ' is not between 1-5000 characters';
                 break;
             default:
                 break;
         }
         this.setState({
-            formErrors: fieldValidationErrors,
             titleValid: titleValid,
             descriptionValid: descriptionValid,
         }, this.validateForm);
@@ -64,7 +60,7 @@ class Form extends Component {
     }
 
     errorClass(error) {
-        return (error.length === 0 ? '' : 'has-error');
+        return (error ? '' : 'has-error');
     }
 
     handleSubmit = event => {
@@ -77,16 +73,20 @@ class Form extends Component {
             description: this.state.description,
             category_id: this.state.category
         };
-
-        axios.post(`http://localhost:3000/items`, {item})
-            .then(res => {
-                console.log(res)
-                this.setState({message: "Item saved! Add another"});
-                document.getElementById("demoForm").reset();
-                this.setState({title: '', description: '', category: '1', errorMessage: ''});
-            }).catch(err => {
+        this.validateForm()
+        if (this.state.formValid) {
+            axios.post(config.apiHost+config.apiPut, {item})
+                .then(res => {
+                    console.log(res)
+                    this.setState({message: "Item saved! Add another"});
+                    document.getElementById("demoForm").reset();
+                    this.setState({title: '', description: '', category: '1', errorMessage: ''});
+                }).catch(err => {
                 this.setState({message: '', errorMessage: "Item was not able to be saved."});
             })
+        } else {
+            this.setState({message: '', errorMessage: "Please fill out the form properly."});
+        }
 
     }
 
@@ -94,20 +94,16 @@ class Form extends Component {
         return (
             <form id="demoForm" className="demoForm" onSubmit={this.handleSubmit}>
                 <h2>Save Item</h2>
-
-                <div className="panel panel-default">
-                    <FormErrors formErrors={this.state.formErrors}/>
-                </div>
                 <div className="successMessage">{this.state.message}</div>
                 <div className="errorMessage">{this.state.errorMessage}</div>
-                <div className={`form-group ${this.errorClass(this.state.formErrors.title)}`}>
+                <div className={`form-group ${this.errorClass(this.state.titleValid)}`}>
                     <label htmlFor="title">Title</label>
                     <input type="text" required className="form-control" name="title"
                            placeholder="Title"
                            value={this.state.title}
                            onChange={this.handleUserInput}/>
                 </div>
-                <div className={`form-group ${this.errorClass(this.state.formErrors.description)}`}>
+                <div className={`form-group ${this.errorClass(this.state.descriptionValid)}`}>
                     <label htmlFor="description">Description</label>
                     <textarea type="text" className="form-control" name="description" rows="4"
                               placeholder="Description"
@@ -122,7 +118,7 @@ class Form extends Component {
                         {this.createSelectItems()}
                     </select>
                 </div>
-                <button type="submit" className="btn btn-primary">Sign up</button>
+                <button type="submit" disabled={!this.state.formValid} className="btn btn-primary">Save</button>
             </form>
         )
     }
