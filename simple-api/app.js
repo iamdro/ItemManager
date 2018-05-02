@@ -9,21 +9,16 @@ const util = require('util');
 var cors = require('cors');
 
 // use it before all route definitions
-app.use(cors({origin: 'http://localhost:3001'}));
+app.use(cors({origin: config.ui.host}));
 
-console.log(config);
 const Sequelize = require('sequelize');
 const sequelize = new Sequelize(config.db.database, config.db.user, config.db.password, {
     host: config.db.host,
     dialect: 'mysql',
     });
+const Item=sequelize.import('./models/item');
 
 
-const Item = sequelize.define('items', {
-    title: Sequelize.STRING,
-    description:Sequelize.TEXT,
-    category_id:Sequelize.INTEGER,
-});
 
 function validateItem(item){
     if (!item){
@@ -63,31 +58,6 @@ app.post("/items", (req, res) => {
             });
     }
 });
-
-app.get("/get", (req, res) => {
-    console.log(req.body)
-    let myData = req.body.item;
-    if(!validateItem(myData)){
-        res.status(400).send("Invalid item trying to be saved");
-    }else {
-        sequelize.sync()
-            .then(() => Item.create({
-                title: myData.title,
-                description: myData.description,
-                category_id: myData.category_id,
-            }))
-            .then(item => {
-                res.send(item);
-            })
-            .catch(err => {
-                console.log(err);
-                res.status(400).send("Unable to save to database");
-            });
-    }
-});
-
-
-
 app.listen(port, () => {
-    console.log("Server listening on port " + port);
+    console.log("Server listening on port " + config.port);
 });

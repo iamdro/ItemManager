@@ -7,3 +7,7 @@ config.db = {
     password: 'password',
     database: 'simplePost'
 }
+config.ui={
+    host:'http://localhost:3001'
+}
+config.port=3000;
