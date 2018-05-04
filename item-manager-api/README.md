@@ -21,24 +21,35 @@ Edit config.json and set config.ui.host to where the item-manager-ui is deployed
 # Installation and running
 From a command line
 
-* npm install
-* node app.js
+    npm install
+    node app.js
 
 ## API methods
-# GET /items/?id=123
-Returns an item from the db, if id is ommited from the query, it returns all items
-# POST /items
-Saves an Item to the database.
-* Example body:
-*    {
-*      "item": {
-*        "title": "Baseball Card",
-*        "description": "Cal Ripken",
-*        "category_id": 1
-*      }
-*    }
 
-# DELETE /items?id=123
+> GET /items/?id=123
+Returns an item from the db, if id is ommited from the query, it returns all items
+
+> POST /items
+Saves an Item to the database.
+
+ Example body:
+    {
+      "item": {
+      "title": "Baseball Card",
+      "description": "Cal Ripken",
+      "category_id": 1
+      }
+    }
+
+> DELETE /items?id=123
 Removes an item specified by the id in the query.
+
+#Testing
+
+There is a suite of integrations scripts located in the application.
+To run them, first install mocha
+    npm install -g mocha
+With the server running, in a terminal window at the root of the api directory run the command
+    mocha
 
 
