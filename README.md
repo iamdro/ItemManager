@@ -9,10 +9,10 @@ each component has it's own documentation which can be found in their respective
 ## Easy Install and Deploy
 # Requirements
 * NodeJs
-* Mysql databse with an empy schema
+* Mysql database with an empy schema
 
 # Setup
-+ Modify item-manager-api/config.js with your databse credetials. The api will create the required tables on a successful first run.
++ Modify item-manager-api/config.js with your database credentials. The api will create the required tables on a successful first run.
 + From a command line
 ```sh
 $ chmod +x installAndRun.sh
