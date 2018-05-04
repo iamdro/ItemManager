@@ -13,6 +13,8 @@ class Form extends Component {
             category: '1',
             titleValid: true,
             descriptionValid: true,
+            titleError:'',
+            descriptionError:'',
             formValid: false,
             message: ''
         }
@@ -49,13 +51,18 @@ class Form extends Component {
     validateField(fieldName, value) {
         let titleValid = this.state.titleValid;
         let descriptionValid = this.state.descriptionValid;
+        let titleError=this.state.titleError;
+        let descriptionError=this.state.descriptionError;
 
         switch (fieldName) {
             case 'title':
                 titleValid = value.length >= 1 && value.length < 255;
+                titleError= titleValid?'':'Title must be between 1-255 characters'
                 break;
             case 'description':
                 descriptionValid = value.length >= 1 && value.length < 5000;
+                descriptionError= descriptionValid?'':'Description must be between 1-5000 characters'
+
                 break;
             default:
                 break;
@@ -63,6 +70,8 @@ class Form extends Component {
         this.setState({
             titleValid: titleValid,
             descriptionValid: descriptionValid,
+            titleError:titleError,
+            descriptionError:descriptionError
         }, this.validateForm);
     }
 
@@ -119,6 +128,8 @@ class Form extends Component {
                 <div className="errorMessage">{this.state.errorMessage}</div>
                 <div className={`form-group ${this.errorClass(this.state.titleValid)}`}>
                     <label htmlFor="title">Title</label>
+                    <div className="errorMessage">{this.state.titleError}</div>
+
                     <input type="text" required className="form-control" name="title"
                            placeholder="Title"
                            value={this.state.title}
@@ -126,6 +137,7 @@ class Form extends Component {
                 </div>
                 <div className={`form-group ${this.errorClass(this.state.descriptionValid)}`}>
                     <label htmlFor="description">Description</label>
+                    <div className="errorMessage">{this.state.descriptionError}</div>
                     <textarea type="text" className="form-control" name="description" rows="4"
                               placeholder="Description"
                               value={this.state.description}
