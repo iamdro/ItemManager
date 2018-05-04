@@ -11,8 +11,8 @@ class Form extends Component {
             title: '',
             description: '',
             category: '1',
-            titleValid: true,
-            descriptionValid: true,
+            titleValid: false,
+            descriptionValid: false,
             formValid: false,
             message: ''
         }
