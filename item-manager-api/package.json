@@ -1,5 +1,5 @@
 {
-  "name": "Item Saver",
+  "name": "Item-Manager-API",
   "version": "1.0.0",
   "description": "Simple api for storing REST requests into a database",
   "main": "app.js",
