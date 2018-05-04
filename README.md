@@ -1,21 +1,20 @@
-# Item Manager API
+# Item Manager
+Item manager has 2 components
+* Item-Manager-API
+* Item-Manager-UI
 
-Item Manager API is a simple REST server that saves Items to a specified database.
+each component has it's own documentation which can be found in their respective readme files.
 
+## Easy Install and Deploy
 # Requirements
-NodeJS
-Mysql
+* NodeJs
+* Mysql databse with an empy schema
 
-# Databse Setup
-The application simply requires a valid mysql database connection and schema specified.
-You can either
-+ Run the included dbSetup.sql on your database
-or
-+ Create a new blank schema.
-Modify config.json and specify your db credentials.
-If you used dbSetup.sql, the database (schema name) is itemManager
-
-# Installation and running
-From a command line
-* npm install
-* npm start
+# Setup
+-Modify item-manager-api/config.js with your databse credetials. The api will create the required tables on a successful first run.
+-From a command line
+```sh
+$ chmod +x installAndRun.sh
+$ ./installAndRun.sh
+```
+if you encounter any errors, read each components corresponding documentation on how to build and deploy
