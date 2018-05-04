@@ -27,6 +27,10 @@ class Form extends Component {
             });
     }
 
+    /**
+     * Creates category drop down contents.
+     * @returns {Array}
+     */
     createSelectItems() {
         let items = [];
         for (let i = 1; i <= 100; i++) {
@@ -34,6 +38,13 @@ class Form extends Component {
         }
         return items;
     }
+
+    /**
+     * Validates if a field is valid for submission.
+     * Stores values in state
+     * @param fieldName
+     * @param value
+     */
 
     validateField(fieldName, value) {
         let titleValid = this.state.titleValid;
@@ -55,6 +66,9 @@ class Form extends Component {
         }, this.validateForm);
     }
 
+    /**
+     * Runs validate on title and description.
+     */
     validateForm() {
         this.setState({formValid: this.state.titleValid && this.state.descriptionValid});
     }
@@ -63,8 +77,12 @@ class Form extends Component {
         return (error ? '' : 'has-error');
     }
 
+    /**
+     * Sends Post to API if item is valid.
+     * @param event
+     */
     handleSubmit = event => {
-
+        //Displays message while waiting on the post to finish.
         this.setState({message: "Saving"});
         event.preventDefault();
 
@@ -73,9 +91,11 @@ class Form extends Component {
             description: this.state.description,
             category_id: this.state.category
         };
+        //make sure the form is valid.
         this.validateForm()
         if (this.state.formValid) {
-            axios.post(config.apiHost+config.apiPut, {item})
+            //Send Post
+            axios.post(config.apiHost+config.itemsApi, {item})
                 .then(res => {
                     console.log(res)
                     this.setState({message: "Item saved! Add another"});
@@ -111,7 +131,7 @@ class Form extends Component {
                               onChange={this.handleUserInput}/>
                 </div>
                 <div className="category">
-                    <label htmlFor="category">Category</label>
+                    <label className="categoryLabel" htmlFor="category">Category </label>
                     <select type="select" name="category"
                             value={this.state.category}
                             onChange={this.handleUserInput}>
