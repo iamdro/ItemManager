@@ -8,8 +8,9 @@ item-manager-api running (see api docs)
 # Configuration
 Modify config.json with the location of the api server.
 
-#Installation and running
 # Installation and running
 From a command line
-* npm install
-* npm start
+```sh
+$ npm install
+$ npm start
+```
