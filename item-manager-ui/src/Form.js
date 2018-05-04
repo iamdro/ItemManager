@@ -11,8 +11,8 @@ class Form extends Component {
             title: '',
             description: '',
             category: '1',
-            titleValid: false,
-            descriptionValid: false,
+            titleValid: true,
+            descriptionValid: true,
             formValid: false,
             message: ''
         }
@@ -70,7 +70,8 @@ class Form extends Component {
      * Runs validate on title and description.
      */
     validateForm() {
-        this.setState({formValid: this.state.titleValid && this.state.descriptionValid});
+        this.setState({formValid: this.state.title.length > 0 && this.state.description.length > 0
+            && this.state.titleValid && this.state.descriptionValid});
     }
 
     errorClass(error) {
@@ -95,7 +96,7 @@ class Form extends Component {
         this.validateForm()
         if (this.state.formValid) {
             //Send Post
-            axios.post(config.apiHost+config.itemsApi, {item})
+            axios.post(config.apiHost + config.itemsApi, {item})
                 .then(res => {
                     console.log(res)
                     this.setState({message: "Item saved! Add another"});
