@@ -33,10 +33,10 @@ function validateItem(item) {
     if (!item.title || item.title.length == 0 || item.title.length > 255) {
         return false;
     }
-    if (!item.description || item.description.length == 0 || item.description.length > 255) {
+    if (!item.description || item.description.length == 0 || item.description.length > 5000) {
         return false;
     }
-    if (!item.category_id || item.category_id < 0 || item.category_id > 255) {
+    if (!item.category_id || item.category_id < 0 || item.category_id > 100) {
         return false;
     }
     return true;
@@ -55,7 +55,7 @@ function validateItem(item) {
       "item": {
         "title": "Baseball Card",
         "description": "Cal Ripken",
-        "category": 1
+        "category_id": 1
       }
     }
 
